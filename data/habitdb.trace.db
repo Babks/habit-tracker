@@ -1,0 +1,8 @@
+2026-03-31 14:30:40.337508+05:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "[*]POST /habits"; ожидалось "PREPARE"
+Syntax error in SQL statement "[*]POST /habits"; expected "PREPARE"; SQL statement:
+POST /habits [42001-240]
+2026-03-31 14:32:49.614114+05:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "[*]POST http://localhost:8080/habits"; ожидалось "PREPARE"
+Syntax error in SQL statement "[*]POST http://localhost:8080/habits"; expected "PREPARE"; SQL statement:
+POST http://localhost:8080/habits [42001-240]
