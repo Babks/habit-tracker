@@ -26,7 +26,7 @@ public class HabitLogService {
         if (habitLogRepository
                 .findByHabitIdAndDate(habitId, LocalDate.now())
                 .isPresent()) {
-            throw new RuntimeException("Already marked today");
+            throw new RuntimeException("Уже отмечено сегодня");
         }
 
         Habit habit = habitRepository.findById(habitId)
