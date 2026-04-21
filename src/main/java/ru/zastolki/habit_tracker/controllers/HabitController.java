@@ -1,5 +1,7 @@
 package ru.zastolki.habit_tracker.controllers;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import ru.zastolki.habit_tracker.dto.HabitCreateDto;
 import ru.zastolki.habit_tracker.dto.HabitResponseDto;
@@ -32,8 +34,8 @@ public class HabitController {
     }
 
     @GetMapping
-    public List<Habit> getAll() {
-        return habitService.getAll();
+    public Page<Habit> getAll(Pageable pageable) {
+        return habitService.getAllPageable(pageable);
     }
 
     @DeleteMapping("/{id}")
