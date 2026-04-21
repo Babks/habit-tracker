@@ -1,9 +1,12 @@
 package ru.zastolki.habit_tracker.controllers;
 
 import org.springframework.web.bind.annotation.*;
+import ru.zastolki.habit_tracker.dto.HabitCreateDto;
+import ru.zastolki.habit_tracker.dto.HabitResponseDto;
 import ru.zastolki.habit_tracker.entitys.Habit;
 import ru.zastolki.habit_tracker.services.HabitService;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -17,8 +20,15 @@ public class HabitController {
     }
 
     @PostMapping
-    public Habit create(@RequestBody Habit habit) {
-        return habitService.create(habit);
+    public HabitResponseDto create(HabitCreateDto createDto) {
+        var newHabit = new Habit();
+        newHabit.setName(createDto.getName());
+        newHabit.setDescription(createDto.getDescription());
+        newHabit.setFrequency(createDto.getFrequency());
+        newHabit.setActive(createDto.getActive());
+        newHabit.setCreatedAt(LocalDate.now());
+
+        return convertHabitToDto(newHabit);
     }
 
     @GetMapping
@@ -29,5 +39,16 @@ public class HabitController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         habitService.delete(id);
+    }
+
+    private HabitResponseDto convertHabitToDto(Habit habit){
+        var dto = new HabitResponseDto();
+        dto.setId(habit.getId());
+        dto.setName(habit.getName());
+        dto.setDescription(habit.getDescription());
+        dto.setFrequency(habit.getFrequency());
+        dto.setCreatedAt(habit.getCreatedAt());
+        dto.setActive(habit.getActive());
+        return dto;
     }
 }
