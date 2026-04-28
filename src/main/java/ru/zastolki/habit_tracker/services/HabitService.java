@@ -27,11 +27,23 @@ public class HabitService {
 
     public Habit edit(Long id, String name, String description, HabitFrequency frequency, Boolean active){
         var habit = habitRepository.getReferenceById(id);
-        habit.setName(name);
-        habit.setDescription(description);
-        habit.setFrequency(frequency);
-        habit.setActive(active);
-        return habit;
+        if (name != null) {
+            habit.setName(name);
+        }
+
+        if (description != null) {
+            habit.setDescription(description);
+        }
+
+        if (frequency != null) {
+            habit.setFrequency(frequency);
+        }
+
+        if (active != null) {
+            habit.setActive(active);
+        }
+
+        return habitRepository.save(habit);
     }
 
     public List<Habit> getAll() {

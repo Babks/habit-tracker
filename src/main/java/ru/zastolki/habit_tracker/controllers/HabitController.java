@@ -1,5 +1,6 @@
 package ru.zastolki.habit_tracker.controllers;
 
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -8,8 +9,6 @@ import ru.zastolki.habit_tracker.dto.HabitEditDto;
 import ru.zastolki.habit_tracker.dto.HabitResponseDto;
 import ru.zastolki.habit_tracker.entitys.Habit;
 import ru.zastolki.habit_tracker.services.HabitService;
-
-import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/habits")
@@ -22,7 +21,7 @@ public class HabitController {
     }
 
     @PostMapping
-    public HabitResponseDto create(@RequestBody HabitCreateDto createDto) {
+    public HabitResponseDto create(@Valid @RequestBody HabitCreateDto createDto) {
         var newHabit = new Habit();
         newHabit.setName(createDto.getName());
         newHabit.setDescription(createDto.getDescription());
@@ -34,7 +33,7 @@ public class HabitController {
     @PutMapping("/{id}")
     public HabitResponseDto edit(
             @PathVariable Long id,
-            @RequestBody HabitEditDto editDto) {
+            @Valid @RequestBody HabitEditDto editDto) {
 
         return convertHabitToDto(
                 habitService.edit(
