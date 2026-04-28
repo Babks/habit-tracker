@@ -2,6 +2,7 @@ package ru.zastolki.habit_tracker.entitys;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import ru.zastolki.habit_tracker.enums.HabitFrequency;
 
 import java.time.LocalDate;
 
@@ -17,7 +18,8 @@ public class Habit {
 
     private String description;
 
-    private String frequency; // DAILY / WEEKLY
+    @Enumerated(EnumType.STRING)
+    private HabitFrequency frequency;
 
     private LocalDate createdAt;
 
