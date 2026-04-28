@@ -9,7 +9,6 @@ import ru.zastolki.habit_tracker.entitys.Habit;
 import ru.zastolki.habit_tracker.services.HabitService;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @RestController
 @RequestMapping("/habits")
@@ -22,7 +21,7 @@ public class HabitController {
     }
 
     @PostMapping
-    public HabitResponseDto create(HabitCreateDto createDto) {
+    public HabitResponseDto create(@RequestBody HabitCreateDto createDto) {
         var newHabit = new Habit();
         newHabit.setName(createDto.getName());
         newHabit.setDescription(createDto.getDescription());
@@ -30,7 +29,7 @@ public class HabitController {
         newHabit.setActive(createDto.getActive());
         newHabit.setCreatedAt(LocalDate.now());
 
-        return convertHabitToDto(newHabit);
+        return convertHabitToDto(habitService.create(newHabit));
     }
 
     @GetMapping
