@@ -26,15 +26,13 @@ public class HabitController {
         newHabit.setName(createDto.getName());
         newHabit.setDescription(createDto.getDescription());
         newHabit.setFrequency(createDto.getFrequency());
-        newHabit.setActive(createDto.getActive());
-        newHabit.setCreatedAt(LocalDate.now());
 
         return convertHabitToDto(habitService.create(newHabit));
     }
 
     @GetMapping
-    public Page<Habit> getAll(Pageable pageable) {
-        return habitService.getAllPageable(pageable);
+    public Page<HabitResponseDto> getAll(Pageable pageable) {
+        return habitService.getAllPageable(pageable).map(this::convertHabitToDto);
     }
 
     @DeleteMapping("/{id}")

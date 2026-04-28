@@ -8,5 +8,4 @@ public class HabitCreateDto {
     private String name;
     private String description;
     private HabitFrequency frequency;
-    private Boolean active;
 }
