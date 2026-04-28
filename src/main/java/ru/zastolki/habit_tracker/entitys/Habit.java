@@ -1,5 +1,6 @@
 package ru.zastolki.habit_tracker.entitys;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import ru.zastolki.habit_tracker.enums.HabitFrequency;
@@ -27,5 +28,6 @@ public class Habit {
     private Boolean active;
 
     @OneToMany(mappedBy = "habit", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<HabitLog> logs;
 }
