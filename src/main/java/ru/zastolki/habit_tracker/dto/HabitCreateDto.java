@@ -2,6 +2,7 @@ package ru.zastolki.habit_tracker.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import ru.zastolki.habit_tracker.enums.HabitFrequency;
@@ -17,5 +18,7 @@ public class HabitCreateDto {
     private String description;
 
     @NotNull(message = "Frequency can't be null")
-    private HabitFrequency frequency;
+    @NotBlank(message = "Frequency can't be blank!")
+    @Pattern(regexp = "DAILY|WEEKLY")
+    private String frequency;
 }
