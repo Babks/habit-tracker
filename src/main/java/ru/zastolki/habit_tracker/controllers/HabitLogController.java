@@ -1,5 +1,7 @@
 package ru.zastolki.habit_tracker.controllers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import ru.zastolki.habit_tracker.entitys.HabitLog;
 import ru.zastolki.habit_tracker.services.HabitLogService;
@@ -10,6 +12,8 @@ import java.util.List;
 @RequestMapping("/logs")
 public class HabitLogController {
 
+    private static final Logger log = LoggerFactory.getLogger(HabitLogController.class);
+
     private final HabitLogService habitLogService;
 
     public HabitLogController(HabitLogService habitLogService) {
@@ -18,11 +22,13 @@ public class HabitLogController {
 
     @PostMapping("/{habitId}")
     public HabitLog markDone(@PathVariable Long habitId) {
+        log.info("Получен HTTP-запрос на отметку выполнения привычки: метод=POST путь=/logs/{}", habitId);
         return habitLogService.markDone(habitId);
     }
 
     @GetMapping("/{habitId}")
     public List<HabitLog> getLogs(@PathVariable Long habitId) {
+        log.info("Получен HTTP-запрос на получение журнала привычки: метод=GET путь=/logs/{}", habitId);
         return habitLogService.getLogs(habitId);
     }
 }

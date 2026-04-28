@@ -1,5 +1,7 @@
 package ru.zastolki.habit_tracker.services;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.zastolki.habit_tracker.entitys.Habit;
 import ru.zastolki.habit_tracker.entitys.HabitLog;
@@ -12,6 +14,8 @@ import java.util.List;
 @Service
 public class HabitLogService {
 
+    private static final Logger log = LoggerFactory.getLogger(HabitLogService.class);
+
     private final HabitLogRepository habitLogRepository;
     private final HabitRepository habitRepository;
 
@@ -22,25 +26,37 @@ public class HabitLogService {
     }
 
     public HabitLog markDone(Long habitId) {
+        var today = LocalDate.now();
+        log.debug("Начата отметка выполнения привычки: идентификаторПривычки={} дата={}", habitId, today);
 
         if (habitLogRepository
-                .findByHabitIdAndDate(habitId, LocalDate.now())
+                .findByHabitIdAndDate(habitId, today)
                 .isPresent()) {
-            throw new RuntimeException("Уже отмечено сегодня");
+            log.info("Повторная отметка выполнения отклонена: идентификаторПривычки={} дата={}", habitId, today);
+            throw new RuntimeException("Привычка уже отмечена сегодня");
         }
 
         Habit habit = habitRepository.findById(habitId)
                 .orElseThrow();
 
-        HabitLog log = new HabitLog();
-        log.setHabit(habit);
-        log.setDate(LocalDate.now());
-        log.setCompleted(true);
+        HabitLog habitLog = new HabitLog();
+        habitLog.setHabit(habit);
+        habitLog.setDate(today);
+        habitLog.setCompleted(true);
 
-        return habitLogRepository.save(log);
+        var savedLog = habitLogRepository.save(habitLog);
+        log.info("Выполнение привычки отмечено: идентификаторПривычки={} идентификаторЗаписи={} дата={}",
+                habitId,
+                savedLog.getId(),
+                savedLog.getDate());
+        return savedLog;
     }
 
     public List<HabitLog> getLogs(Long habitId) {
-        return habitLogRepository.findByHabitId(habitId);
+        log.debug("Запрошен журнал выполнения привычки: идентификаторПривычки={}", habitId);
+
+        var logs = habitLogRepository.findByHabitId(habitId);
+        log.info("Журнал выполнения привычки получен: идентификаторПривычки={} количествоЗаписей={}", habitId, logs.size());
+        return logs;
     }
 }
