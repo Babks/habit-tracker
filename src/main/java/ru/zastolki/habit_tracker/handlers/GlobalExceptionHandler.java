@@ -34,11 +34,18 @@ public class GlobalExceptionHandler {
                 .body(result.toString());
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> illegalArgumentExceptions(IllegalArgumentException ex) {
+        log.warn("Бизнес-ошибка при обработке запроса: сообщение={}", ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ex.getMessage());
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleAllExceptions(Exception ex) {
         log.error("Непредвиденная ошибка при обработке запроса", ex);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body("Непредвиденная ошибка при обработке запроса");
     }
-
 }
