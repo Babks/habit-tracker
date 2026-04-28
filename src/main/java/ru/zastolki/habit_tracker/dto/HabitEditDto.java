@@ -1,0 +1,12 @@
+package ru.zastolki.habit_tracker.dto;
+
+import lombok.Data;
+import ru.zastolki.habit_tracker.enums.HabitFrequency;
+
+@Data
+public class HabitEditDto {
+    private String name;
+    private String description;
+    private HabitFrequency frequency;
+    private Boolean active;
+}

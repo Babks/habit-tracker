@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import ru.zastolki.habit_tracker.dto.HabitCreateDto;
+import ru.zastolki.habit_tracker.dto.HabitEditDto;
 import ru.zastolki.habit_tracker.dto.HabitResponseDto;
 import ru.zastolki.habit_tracker.entitys.Habit;
 import ru.zastolki.habit_tracker.services.HabitService;
@@ -28,6 +29,17 @@ public class HabitController {
         newHabit.setFrequency(createDto.getFrequency());
 
         return convertHabitToDto(habitService.create(newHabit));
+    }
+
+    @PutMapping("/{id}")
+    public HabitResponseDto edit(
+            @PathVariable Long id,
+            @RequestBody HabitEditDto editDto) {
+
+        return convertHabitToDto(
+                habitService.edit(
+                        id,
+                        editDto.getName(), editDto.getDescription(), editDto.getFrequency(), editDto.getActive()));
     }
 
     @GetMapping

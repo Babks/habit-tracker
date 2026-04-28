@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.zastolki.habit_tracker.entitys.Habit;
+import ru.zastolki.habit_tracker.enums.HabitFrequency;
 import ru.zastolki.habit_tracker.repositories.HabitRepository;
 
 import java.time.LocalDate;
@@ -22,6 +23,15 @@ public class HabitService {
         habit.setCreatedAt(LocalDate.now());
         habit.setActive(true);
         return habitRepository.save(habit);
+    }
+
+    public Habit edit(Long id, String name, String description, HabitFrequency frequency, Boolean active){
+        var habit = habitRepository.getReferenceById(id);
+        habit.setName(name);
+        habit.setDescription(description);
+        habit.setFrequency(frequency);
+        habit.setActive(active);
+        return habit;
     }
 
     public List<Habit> getAll() {
