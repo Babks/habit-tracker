@@ -13,4 +13,5 @@ public class HabitResponseDto {
     private HabitFrequency frequency;
     private LocalDate createdAt;
     private Boolean active;
+    private int streak;
 }

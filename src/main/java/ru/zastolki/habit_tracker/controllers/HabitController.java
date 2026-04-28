@@ -5,12 +5,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import ru.zastolki.habit_tracker.dto.HabitCreateDto;
 import ru.zastolki.habit_tracker.dto.HabitEditDto;
 import ru.zastolki.habit_tracker.dto.HabitResponseDto;
 import ru.zastolki.habit_tracker.entitys.Habit;
 import ru.zastolki.habit_tracker.enums.HabitFrequency;
+import ru.zastolki.habit_tracker.services.HabitLogService;
 import ru.zastolki.habit_tracker.services.HabitService;
 
 @RestController
@@ -20,9 +28,11 @@ public class HabitController {
     private static final Logger log = LoggerFactory.getLogger(HabitController.class);
 
     private final HabitService habitService;
+    private final HabitLogService habitLogService;
 
-    public HabitController(HabitService habitService) {
+    public HabitController(HabitService habitService, HabitLogService habitLogService) {
         this.habitService = habitService;
+        this.habitLogService = habitLogService;
     }
 
     @PostMapping
@@ -69,6 +79,12 @@ public class HabitController {
         return habitService.getAllPageable(pageable).map(this::convertHabitToDto);
     }
 
+    @GetMapping("/{id}/streak")
+    public int getStreak(@PathVariable Long id) {
+        log.info("Получен HTTP-запрос на получение стрика привычки: метод=GET путь=/habits/{}/streak", id);
+        return habitLogService.calculateStreak(id);
+    }
+
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         log.info("Получен HTTP-запрос на удаление привычки: метод=DELETE путь=/habits/{}", id);
@@ -83,6 +99,7 @@ public class HabitController {
         dto.setFrequency(habit.getFrequency());
         dto.setCreatedAt(habit.getCreatedAt());
         dto.setActive(habit.getActive());
+        dto.setStreak(habitLogService.calculateStreak(habit.getId()));
         return dto;
     }
 }

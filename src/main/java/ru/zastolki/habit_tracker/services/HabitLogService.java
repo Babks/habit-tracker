@@ -9,6 +9,7 @@ import ru.zastolki.habit_tracker.repositories.HabitLogRepository;
 import ru.zastolki.habit_tracker.repositories.HabitRepository;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -56,7 +57,29 @@ public class HabitLogService {
         log.debug("Запрошен журнал выполнения привычки: идентификаторПривычки={}", habitId);
 
         var logs = habitLogRepository.findByHabitId(habitId);
-        log.info("Журнал выполнения привычки получен: идентификаторПривычки={} количествоЗаписей={}", habitId, logs.size());
+        log.info("Журнал выполнения привычки получен: идентификаторПривычки={} количествоЗаписей={}",
+                habitId,
+                logs.size());
         return logs;
+    }
+
+    public int calculateStreak(Long habitId) {
+        log.debug("Начат расчет стрика привычки: идентификаторПривычки={}", habitId);
+
+        var completedDates = new HashSet<>(habitLogRepository.findCompletedDatesByHabitIdOrderByDateDesc(habitId));
+        var currentDate = LocalDate.now();
+
+        if (!completedDates.contains(currentDate)) {
+            currentDate = currentDate.minusDays(1);
+        }
+
+        var streak = 0;
+        while (completedDates.contains(currentDate)) {
+            streak++;
+            currentDate = currentDate.minusDays(1);
+        }
+
+        log.info("Стрик привычки рассчитан: идентификаторПривычки={} стрикВДнях={}", habitId, streak);
+        return streak;
     }
 }
