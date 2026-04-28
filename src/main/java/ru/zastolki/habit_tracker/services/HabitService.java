@@ -25,7 +25,7 @@ public class HabitService {
         return habitRepository.save(habit);
     }
 
-    public Habit edit(Long id, String name, String description, HabitFrequency frequency, Boolean active){
+    public Habit edit(Long id, String name, String description, HabitFrequency frequency, Boolean active) {
         var habit = habitRepository.getReferenceById(id);
         if (name != null) {
             habit.setName(name);

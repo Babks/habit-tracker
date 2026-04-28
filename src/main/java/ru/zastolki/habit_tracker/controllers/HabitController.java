@@ -8,6 +8,7 @@ import ru.zastolki.habit_tracker.dto.HabitCreateDto;
 import ru.zastolki.habit_tracker.dto.HabitEditDto;
 import ru.zastolki.habit_tracker.dto.HabitResponseDto;
 import ru.zastolki.habit_tracker.entitys.Habit;
+import ru.zastolki.habit_tracker.enums.HabitFrequency;
 import ru.zastolki.habit_tracker.services.HabitService;
 
 @RestController
@@ -25,7 +26,7 @@ public class HabitController {
         var newHabit = new Habit();
         newHabit.setName(createDto.getName());
         newHabit.setDescription(createDto.getDescription());
-        newHabit.setFrequency(createDto.getFrequency());
+        newHabit.setFrequency(HabitFrequency.fromString(createDto.getFrequency()));
 
         return convertHabitToDto(habitService.create(newHabit));
     }
@@ -38,7 +39,10 @@ public class HabitController {
         return convertHabitToDto(
                 habitService.edit(
                         id,
-                        editDto.getName(), editDto.getDescription(), editDto.getFrequency(), editDto.getActive()));
+                        editDto.getName(),
+                        editDto.getDescription(),
+                        HabitFrequency.fromString(editDto.getFrequency()),
+                        editDto.getActive()));
     }
 
     @GetMapping
@@ -51,7 +55,7 @@ public class HabitController {
         habitService.delete(id);
     }
 
-    private HabitResponseDto convertHabitToDto(Habit habit){
+    private HabitResponseDto convertHabitToDto(Habit habit) {
         var dto = new HabitResponseDto();
         dto.setId(habit.getId());
         dto.setName(habit.getName());
