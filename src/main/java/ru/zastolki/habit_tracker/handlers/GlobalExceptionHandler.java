@@ -1,6 +1,7 @@
 package ru.zastolki.habit_tracker.handlers;
 
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -9,15 +10,16 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 
-@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<String> notValidArgumentExceptions(MethodArgumentNotValidException ex) {
-        log.warn("Validation warn: " + ex.getMessage());
+        log.warn("Ошибка валидации входящего запроса: количествоОшибок={}", ex.getErrorCount());
 
-        var result = new StringBuilder("Validation problems:\n");
+        var result = new StringBuilder("Ошибки валидации:\n");
 
         for (var error : ex.getAllErrors()) {
             result.append('\t');
@@ -34,9 +36,9 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleAllExceptions(Exception ex) {
-        log.error("Unexpected error: ", ex);
+        log.error("Непредвиденная ошибка при обработке запроса", ex);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("Unexpected error: " + ex);
+                .body("Непредвиденная ошибка при обработке запроса");
     }
 
 }

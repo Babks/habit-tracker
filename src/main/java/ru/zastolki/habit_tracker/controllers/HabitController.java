@@ -1,6 +1,8 @@
 package ru.zastolki.habit_tracker.controllers;
 
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,8 @@ import ru.zastolki.habit_tracker.services.HabitService;
 @RequestMapping("/habits")
 public class HabitController {
 
+    private static final Logger log = LoggerFactory.getLogger(HabitController.class);
+
     private final HabitService habitService;
 
     public HabitController(HabitService habitService) {
@@ -23,6 +27,9 @@ public class HabitController {
 
     @PostMapping
     public HabitResponseDto create(@Valid @RequestBody HabitCreateDto createDto) {
+        log.info("Получен HTTP-запрос на создание привычки: метод=POST путь=/habits частота={}",
+                createDto.getFrequency());
+
         var newHabit = new Habit();
         newHabit.setName(createDto.getName());
         newHabit.setDescription(createDto.getDescription());
@@ -35,6 +42,13 @@ public class HabitController {
     public HabitResponseDto edit(
             @PathVariable Long id,
             @Valid @RequestBody HabitEditDto editDto) {
+        log.info(
+                "Получен HTTP-запрос на изменение привычки: метод=PUT путь=/habits/{} переданоНазвание={} переданоОписание={} переданаЧастота={} переданСтатусАктивности={}",
+                id,
+                editDto.getName() != null,
+                editDto.getDescription() != null,
+                editDto.getFrequency() != null,
+                editDto.getActive() != null);
 
         return convertHabitToDto(
                 habitService.edit(
@@ -47,11 +61,17 @@ public class HabitController {
 
     @GetMapping
     public Page<HabitResponseDto> getAll(Pageable pageable) {
+        log.info("Получен HTTP-запрос на получение списка привычек: метод=GET путь=/habits страница={} размер={} сортировка={}",
+                pageable.getPageNumber(),
+                pageable.getPageSize(),
+                pageable.getSort());
+
         return habitService.getAllPageable(pageable).map(this::convertHabitToDto);
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
+        log.info("Получен HTTP-запрос на удаление привычки: метод=DELETE путь=/habits/{}", id);
         habitService.delete(id);
     }
 
