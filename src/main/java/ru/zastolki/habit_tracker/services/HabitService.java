@@ -33,7 +33,7 @@ public class HabitService {
         return savedHabit;
     }
 
-    public Habit edit(Long id, String name, String description, HabitFrequency frequency, Boolean active){
+    public Habit edit(Long id, String name, String description, HabitFrequency frequency, Boolean active) {
         log.debug(
                 "Начато изменение привычки: идентификаторПривычки={} переданоНазвание={} переданоОписание={} переданаЧастота={} переданСтатусАктивности={}",
                 id,

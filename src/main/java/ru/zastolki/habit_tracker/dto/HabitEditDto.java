@@ -1,5 +1,6 @@
 package ru.zastolki.habit_tracker.dto;
 
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import ru.zastolki.habit_tracker.enums.HabitFrequency;
@@ -12,7 +13,8 @@ public class HabitEditDto {
     @Size(max = 500, message = "Habit description can't be bigger than 500 symbols")
     private String description;
 
-    private HabitFrequency frequency;
+    @Pattern(regexp = "DAILY|WEEKLY")
+    private String frequency;
 
     private Boolean active;
 }
