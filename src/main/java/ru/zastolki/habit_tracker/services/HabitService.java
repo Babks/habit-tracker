@@ -67,11 +67,6 @@ public class HabitService {
         return savedHabit;
     }
 
-    public List<Habit> getAll() {
-        log.debug("Запрошен полный список привычек");
-        return habitRepository.findAll();
-    }
-
     public Page<Habit> getAllPageable(Pageable pageable) {
         log.debug("Запрошена страница привычек: страница={} размер={} сортировка={}",
                 pageable.getPageNumber(),
