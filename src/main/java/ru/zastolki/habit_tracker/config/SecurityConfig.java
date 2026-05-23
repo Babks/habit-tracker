@@ -50,6 +50,24 @@ public class SecurityConfig {
                             response.setContentType("application/json");
                             response.getWriter().write("{\"result\":\"failed\"}");
                         }))
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessHandler((request, response, authenication) -> {
+                            if(authenication != null){
+                                log.info("Пользователь вышел из системы. Имя пользователя:{}", authenication.getName());
+                            }
+                            else{
+                                log.info("Выполнен выход из системы");
+                            }
+
+                            response.setStatus(HttpServletResponse.SC_OK);
+                            response.setContentType("application/json");
+                            response.getWriter().write("{\"result\":\"logout sucess\"}");
+                        })
+                        .invalidateHttpSession(true)
+                        .clearAuthentication(true)
+                        .deleteCookies("JSESSIONID")
+                )
                 .build();
     }
 
