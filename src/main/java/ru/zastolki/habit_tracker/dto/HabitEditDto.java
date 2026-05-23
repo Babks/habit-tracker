@@ -3,7 +3,6 @@ package ru.zastolki.habit_tracker.dto;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
-import ru.zastolki.habit_tracker.enums.HabitFrequency;
 
 @Data
 public class HabitEditDto {

@@ -10,7 +10,6 @@ import ru.zastolki.habit_tracker.enums.HabitFrequency;
 import ru.zastolki.habit_tracker.repositories.HabitRepository;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Service
 public class HabitService {

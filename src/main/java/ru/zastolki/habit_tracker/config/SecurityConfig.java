@@ -53,10 +53,9 @@ public class SecurityConfig {
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessHandler((request, response, authenication) -> {
-                            if(authenication != null){
+                            if (authenication != null) {
                                 log.info("Пользователь вышел из системы. Имя пользователя:{}", authenication.getName());
-                            }
-                            else{
+                            } else {
                                 log.info("Выполнен выход из системы");
                             }
 
