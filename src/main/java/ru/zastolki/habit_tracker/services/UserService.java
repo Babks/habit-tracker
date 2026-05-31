@@ -2,13 +2,10 @@ package ru.zastolki.habit_tracker.services;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.zastolki.habit_tracker.dto.RegisterDto;
 import ru.zastolki.habit_tracker.entitys.AppUser;
-import ru.zastolki.habit_tracker.entitys.Habit;
 import ru.zastolki.habit_tracker.enums.UserRole;
 import ru.zastolki.habit_tracker.repositories.AppUserRepository;
 

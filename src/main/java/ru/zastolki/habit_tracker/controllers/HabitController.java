@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.zastolki.habit_tracker.dto.HabitCreateDto;
 import ru.zastolki.habit_tracker.dto.HabitEditDto;
 import ru.zastolki.habit_tracker.dto.HabitResponseDto;
-import ru.zastolki.habit_tracker.entitys.AppUser;
 import ru.zastolki.habit_tracker.entitys.Habit;
 import ru.zastolki.habit_tracker.enums.HabitFrequency;
 import ru.zastolki.habit_tracker.services.HabitLogService;
