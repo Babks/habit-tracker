@@ -5,14 +5,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.zastolki.habit_tracker.dto.HabitCreateDto;
 import ru.zastolki.habit_tracker.dto.HabitEditDto;
 import ru.zastolki.habit_tracker.dto.HabitResponseDto;
+import ru.zastolki.habit_tracker.entitys.AppUser;
 import ru.zastolki.habit_tracker.entitys.Habit;
 import ru.zastolki.habit_tracker.enums.HabitFrequency;
 import ru.zastolki.habit_tracker.services.HabitLogService;
 import ru.zastolki.habit_tracker.services.HabitService;
+import ru.zastolki.habit_tracker.services.UserService;
 
 @RestController
 @RequestMapping("/habits")
@@ -20,23 +23,31 @@ public class HabitController {
 
     private static final Logger log = LoggerFactory.getLogger(HabitController.class);
 
+    private final UserService userService;
     private final HabitService habitService;
     private final HabitLogService habitLogService;
 
-    public HabitController(HabitService habitService, HabitLogService habitLogService) {
+    public HabitController(UserService userService, HabitService habitService, HabitLogService habitLogService) {
+        this.userService = userService;
         this.habitService = habitService;
         this.habitLogService = habitLogService;
     }
 
     @PostMapping
-    public HabitResponseDto create(@Valid @RequestBody HabitCreateDto createDto) {
+    public HabitResponseDto create(
+            Authentication authentication,
+            @Valid @RequestBody HabitCreateDto createDto) {
         log.info("Получен HTTP-запрос на создание привычки: метод=POST путь=/habits частота={}",
                 createDto.getFrequency());
+
+        var username = authentication.getName();
+        var user = userService.getUserByName(username);
 
         var newHabit = new Habit();
         newHabit.setName(createDto.getName());
         newHabit.setDescription(createDto.getDescription());
         newHabit.setFrequency(HabitFrequency.fromString(createDto.getFrequency()));
+        newHabit.setUser(user);
 
         return convertHabitToDto(habitService.create(newHabit));
     }
