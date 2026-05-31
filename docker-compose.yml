@@ -1,0 +1,19 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: habit-postgres
+    restart: always
+
+    environment:
+      POSTGRES_DB: ${HABIT_DB_NAME}
+      POSTGRES_USER: ${HABIT_DB_USER}
+      POSTGRES_PASSWORD: ${HABIT_DB_PASSWORD}
+
+    ports:
+      - "${HABIT_DB_PORT}:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
