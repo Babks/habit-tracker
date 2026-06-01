@@ -4,6 +4,7 @@ CREATE TABLE app_users (
     username VARCHAR(50) NOT NULL,
     password VARCHAR(255) NOT NULL,
     role VARCHAR(50) NOT NULL,
+    points INTEGER NOT NULL DEFAULT 0,
 
     CONSTRAINT PK__app_users PRIMARY KEY (id),
     CONSTRAINT UQ__app_users_username UNIQUE(username)
@@ -32,6 +33,7 @@ CREATE TABLE habit_logs (
 
     date DATE NOT NULL,
     completed BOOLEAN NOT NULL DEFAULT FALSE,
+    points_awarded INTEGER,
     habit_id BIGINT NOT NULL,
 
     CONSTRAINT PK__habit_logs PRIMARY KEY (id),

@@ -8,6 +8,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.server.ResponseStatusException;
 
 
 @RestControllerAdvice
@@ -40,6 +41,16 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ex.getMessage());
+    }
+
+    @ExceptionHandler(ResponseStatusException.class)
+    public ResponseEntity<String> responseStatusExceptions(ResponseStatusException ex) {
+        log.warn("Запрос завершен с ожидаемой ошибкой: статус={} причина={}",
+                ex.getStatusCode(),
+                ex.getReason());
+
+        return ResponseEntity.status(ex.getStatusCode())
+                .body(ex.getReason());
     }
 
     @ExceptionHandler(Exception.class)
