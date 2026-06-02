@@ -23,7 +23,7 @@ Habit Tracker — это backend-приложение для отслежива�
 
 Планируемый функционал:
 
-- Авторизация пользователя (JWT)
+- Авторизация пользователя (Spring Security)
 - Создание привычки
 - Редактирование привычки
 - Удаление привычки
@@ -37,7 +37,6 @@ Habit Tracker — это backend-приложение для отслежива�
 
 - Роли (USER / ADMIN)
 - Геймификация (баллы за выполнение)
-- Напоминания через Scheduler
 - Docker-контейнеризация
 
 ---
@@ -57,11 +56,15 @@ Habit Tracker — это backend-приложение для отслежива�
 ## Используемые технологии
 
 - Java 21
-- Spring Boot
-- Spring Web
+- Spring Boot 4
+- Spring Web MVC
+- Spring Security
 - Spring Data JPA
-- H2 Database
+- Hibernate
+- PostgreSQL
+- Flyway
 - Lombok
 - Gradle (Groovy)
+- Docker
 
 ---
