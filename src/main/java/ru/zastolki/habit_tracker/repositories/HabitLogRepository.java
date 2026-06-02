@@ -11,10 +11,21 @@ import java.util.Optional;
 
 public interface HabitLogRepository extends JpaRepository<HabitLog, Long> {
 
-    List<HabitLog> findByHabitId(Long habitId);
+    List<HabitLog> findByHabitIdAndHabitUserUsername(Long habitId, String username);
 
-    Optional<HabitLog> findByHabitIdAndDate(Long habitId, LocalDate date);
+    Optional<HabitLog> findByHabitIdAndHabitUserUsernameAndDate(Long habitId, String username, LocalDate date);
 
-    @Query("select log.date from HabitLog log where log.habit.id = :habitId and log.completed = true order by log.date desc")
-    List<LocalDate> findCompletedDatesByHabitIdOrderByDateDesc(@Param("habitId") Long habitId);
+    long countByHabitUserUsername(String username);
+
+    @Query("""
+            select log.date
+            from HabitLog log
+            where log.habit.id = :habitId
+              and log.habit.user.username = :username
+              and log.completed = true
+            order by log.date desc
+            """)
+    List<LocalDate> findCompletedDatesByHabitIdAndUsernameOrderByDateDesc(
+            @Param("habitId") Long habitId,
+            @Param("username") String username);
 }

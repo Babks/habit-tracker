@@ -37,6 +37,7 @@ public class Habit {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     private AppUser user;
 
     @OneToMany(mappedBy = "habit", cascade = CascadeType.ALL)
